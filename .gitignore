@@ -1,0 +1,9 @@
+# Root level ignores
+.env
+*.log
+node_modules/
+target/
+uploads/
+.idea/
+.vscode/
+
