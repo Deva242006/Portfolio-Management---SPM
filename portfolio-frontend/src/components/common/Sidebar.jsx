@@ -2,6 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
+  Sparkles,
+  Layers,
   User,
   Code2,
   FolderGit2,
@@ -13,11 +15,13 @@ import {
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/profile', label: 'Profile', icon: User },
-  { path: '/skills', label: 'Skills', icon: Code2 },
-  { path: '/projects', label: 'Projects', icon: FolderGit2 },
+  { path: '/builder', label: 'Portfolio Builder', icon: Sparkles },
+  { path: '/templates', label: 'Templates Gallery', icon: Layers },
+  { path: '/profile', label: 'Profile & Bio', icon: User },
+  { path: '/skills', label: 'Technical Skills', icon: Code2 },
+  { path: '/projects', label: 'Projects Showcase', icon: FolderGit2 },
   { path: '/certifications', label: 'Certifications', icon: Award },
-  { path: '/resume', label: 'Resume', icon: FileText },
+  { path: '/resume', label: 'Resume (PDF)', icon: FileText },
   { path: '/preview', label: 'Portfolio Preview', icon: Eye },
 ];
 

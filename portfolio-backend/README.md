@@ -1,14 +1,16 @@
-# PortfolioHub — Spring Boot Backend
+# Portfolify — Spring Boot Backend
 
-The backend engine for PortfolioHub, developed with **Java 21**, **Spring Boot 3**, **Spring Security**, **Spring Data JPA**, and **MySQL**.
+The backend engine for Portfolify, developed with **Java 21**, **Spring Boot 3.3.4**, **Spring Security 6**, **Spring Data JPA**, and **MySQL**.
 
 ## Features
 
 - **JWT Authentication & Security**: Stateless JWT token authentication with BCrypt hashing and custom UserDetailsService.
 - **Strict Authorization & Ownership**: Server-side checks ensure users can only modify their own data.
-- **RESTful Endpoints**: Full CRUD operations for Profiles, Skills, Projects, Certifications, and Resumes.
+- **RESTful Endpoints**: Full CRUD operations for Profiles, Experiences, Skills, Projects, Certifications, and Resumes.
+- **Dynamic Template & Theme Persistence**: Stores chosen `templateId`, `themeColor`, and `fontFamily` in the profile.
+- **Work Experience Support**: Full CRUD for company history, roles, dates, and descriptions.
 - **PDF File Storage**: Secure validation and local filesystem storage for resumes (max 5MB, PDF MIME verification).
-- **Public Portfolio Generation**: Generates public portfolios at `/api/public/{username}` with publishing controls.
+- **Public Portfolio Generation**: Generates public portfolios at `/api/public/p/{username}` and `/api/public/{username}` with publishing controls.
 - **Centralized Exception Handling**: Structured error responses with timestamps, HTTP status codes, and field validation messages.
 
 ## Prerequisites
@@ -39,9 +41,10 @@ Log into MySQL and create the database:
 CREATE DATABASE IF NOT EXISTS portfolio_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-Hibernate ddl-auto is set to `update`, which will automatically create and update tables:
+Hibernate `ddl-auto` is set to `update`, which will automatically create and update tables:
 - `users`
-- `profiles`
+- `profiles` (with `template_id`, `theme_color`, `font_family`)
+- `experiences` (with `company`, `role`, `start_date`, `end_date`, `is_current`, `location`, `description`)
 - `skills`
 - `projects`
 - `certifications`
@@ -64,4 +67,3 @@ mvn test
 mvn clean package -DskipTests
 java -jar target/portfolio-backend-0.0.1-SNAPSHOT.jar
 ```
-

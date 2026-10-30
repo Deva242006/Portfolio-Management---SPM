@@ -48,6 +48,15 @@ public class Profile {
     @Column(name = "avatar_url", length = 500)
     private String avatarUrl;
 
+    @Column(name = "template_id", length = 50)
+    private String templateId = "minimal-pro";
+
+    @Column(name = "theme_color", length = 30)
+    private String themeColor = "indigo";
+
+    @Column(name = "font_family", length = 30)
+    private String fontFamily = "sans";
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -175,6 +184,30 @@ public class Profile {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public String getTemplateId() {
+        return templateId != null ? templateId : "minimal-pro";
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
+    }
+
+    public String getThemeColor() {
+        return themeColor != null ? themeColor : "indigo";
+    }
+
+    public void setThemeColor(String themeColor) {
+        this.themeColor = themeColor;
+    }
+
+    public String getFontFamily() {
+        return fontFamily != null ? fontFamily : "sans";
+    }
+
+    public void setFontFamily(String fontFamily) {
+        this.fontFamily = fontFamily;
     }
 
     public LocalDateTime getCreatedAt() {

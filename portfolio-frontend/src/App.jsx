@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import DashboardLayout from './components/layout/DashboardLayout';
 import LandingPage from './pages/LandingPage';
+import TemplatesPage from './pages/TemplatesPage';
+import BuilderPage from './pages/BuilderPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
@@ -20,15 +22,21 @@ export function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public Routes */}
+          {/* Public Website Routes */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/templates" element={<TemplatesPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+
+          {/* Public Portfolio Viewers */}
+          <Route path="/p/:username" element={<PublicPortfolioPage />} />
+          <Route path="/p/:slug" element={<PublicPortfolioPage />} />
           <Route path="/u/:username" element={<PublicPortfolioPage />} />
 
-          {/* Authenticated Dashboard Management Routes */}
+          {/* Authenticated Dashboard & Builder Routes */}
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/builder" element={<BuilderPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/skills" element={<SkillsPage />} />
             <Route path="/projects" element={<ProjectsPage />} />

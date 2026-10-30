@@ -11,6 +11,10 @@ public class PublicPortfolioDto {
     private List<CertificationDto> certifications;
     private boolean hasResume;
     private String resumeDownloadUrl;
+    private String templateId;
+    private String themeColor;
+    private String fontFamily;
+    private List<ExperienceDto> experiences;
 
     public PublicPortfolioDto() {
     }
@@ -77,6 +81,38 @@ public class PublicPortfolioDto {
 
     public void setResumeDownloadUrl(String resumeDownloadUrl) {
         this.resumeDownloadUrl = resumeDownloadUrl;
+    }
+
+    public String getTemplateId() {
+        return templateId != null ? templateId : "minimal-pro";
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
+    }
+
+    public String getThemeColor() {
+        return themeColor != null ? themeColor : "indigo";
+    }
+
+    public void setThemeColor(String themeColor) {
+        this.themeColor = themeColor;
+    }
+
+    public String getFontFamily() {
+        return fontFamily != null ? fontFamily : "sans";
+    }
+
+    public void setFontFamily(String fontFamily) {
+        this.fontFamily = fontFamily;
+    }
+
+    public List<ExperienceDto> getExperiences() {
+        return experiences;
+    }
+
+    public void setExperiences(List<ExperienceDto> experiences) {
+        this.experiences = experiences;
     }
 }
 

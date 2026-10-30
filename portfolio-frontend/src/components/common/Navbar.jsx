@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
   Menu,
@@ -15,6 +15,7 @@ import {
 export const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
 
@@ -23,7 +24,8 @@ export const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     navigate('/login');
   };
 
-  const publicUrl = user?.username ? `/u/${user.username}` : '#';
+  const publicUrl = user?.username ? `/p/${user.username}` : '#';
+  const isBuilder = location.pathname === '/builder';
 
   return (
     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200/80">
@@ -32,7 +34,7 @@ export const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
           <button
             type="button"
             onClick={onToggleSidebar}
-            className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition"
+            className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition cursor-pointer"
             title="Toggle Sidebar"
           >
             <Menu className="w-5 h-5" />
@@ -43,12 +45,21 @@ export const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
               <Sparkles className="w-5 h-5" />
             </div>
             <span className="font-bold text-lg bg-gradient-to-r from-slate-900 to-indigo-900 bg-clip-text text-transparent hidden sm:inline">
-              Portfolio<span className="text-indigo-600">Hub</span>
+              Portfoli<span className="text-indigo-600">fy</span>
             </span>
           </Link>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-3">
+          {!isBuilder && (
+            <Link
+              to="/builder"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-sm"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Builder Studio</span>
+            </Link>
+          )}
           {/* Public Status Indicator */}
           <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border bg-slate-50">
             <span className={`w-2 h-2 rounded-full ${user?.isPublished ? 'bg-emerald-500 animate-pulse' : 'bg-amber-400'}`} />
@@ -93,8 +104,8 @@ export const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                 </div>
                 <div className="py-3 text-xs text-slate-600 space-y-2">
                   <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100">
-                    <p className="font-medium text-slate-800">Welcome to PortfolioHub!</p>
-                    <p className="text-slate-500 mt-0.5">Complete your profile, add skills, and publish your personal portfolio.</p>
+                    <p className="font-medium text-slate-800">Welcome to Portfolify!</p>
+                    <p className="text-slate-500 mt-0.5">Customize your design, add skills and projects, and publish your personal portfolio.</p>
                   </div>
                 </div>
               </div>
@@ -109,26 +120,26 @@ export const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                 setDropdownOpen(!dropdownOpen);
                 setNotificationOpen(false);
               }}
-              className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-100 transition"
+              className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-100 transition max-w-[180px]"
             >
               {user?.avatarUrl ? (
                 <img
                   src={user.avatarUrl}
                   alt={user.fullName || user.username}
-                  className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                  className="w-8 h-8 rounded-full object-cover border border-slate-200 flex-shrink-0"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 text-white font-semibold flex items-center justify-center text-xs shadow-sm">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 text-white font-semibold flex items-center justify-center text-xs shadow-sm flex-shrink-0">
                   {(user?.fullName || user?.username || 'U').charAt(0).toUpperCase()}
                 </div>
               )}
-              <div className="text-left hidden md:block">
-                <p className="text-xs font-semibold text-slate-800 leading-tight">
+              <div className="text-left hidden md:block max-w-[110px] overflow-hidden">
+                <p className="text-xs font-semibold text-slate-800 leading-tight truncate">
                   {user?.fullName || user?.username}
                 </p>
-                <p className="text-[11px] text-slate-400 leading-tight">@{user?.username}</p>
+                <p className="text-[11px] text-slate-400 leading-tight truncate">@{user?.username}</p>
               </div>
-              <ChevronDown className="w-4 h-4 text-slate-400" />
+              <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
             </button>
 
             {dropdownOpen && (

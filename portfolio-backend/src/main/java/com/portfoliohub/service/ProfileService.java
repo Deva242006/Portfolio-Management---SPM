@@ -55,6 +55,15 @@ public class ProfileService {
         profile.setLinkedinUrl(dto.getLinkedinUrl());
         profile.setWebsiteUrl(dto.getWebsiteUrl());
         profile.setAvatarUrl(dto.getAvatarUrl());
+        if (dto.getTemplateId() != null) {
+            profile.setTemplateId(dto.getTemplateId());
+        }
+        if (dto.getThemeColor() != null) {
+            profile.setThemeColor(dto.getThemeColor());
+        }
+        if (dto.getFontFamily() != null) {
+            profile.setFontFamily(dto.getFontFamily());
+        }
 
         Profile saved = profileRepository.save(profile);
         return toDto(saved);
@@ -75,6 +84,9 @@ public class ProfileService {
         dto.setLinkedinUrl(profile.getLinkedinUrl());
         dto.setWebsiteUrl(profile.getWebsiteUrl());
         dto.setAvatarUrl(profile.getAvatarUrl());
+        dto.setTemplateId(profile.getTemplateId());
+        dto.setThemeColor(profile.getThemeColor());
+        dto.setFontFamily(profile.getFontFamily());
         return dto;
     }
 }

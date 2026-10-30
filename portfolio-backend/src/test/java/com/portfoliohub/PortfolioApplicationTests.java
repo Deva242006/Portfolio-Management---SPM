@@ -40,8 +40,12 @@ class PortfolioApplicationTests {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private com.portfoliohub.repository.ExperienceRepository experienceRepository;
+
     @BeforeEach
     void setup() {
+        if (experienceRepository != null) experienceRepository.deleteAll();
         projectRepository.deleteAll();
         skillRepository.deleteAll();
         userRepository.deleteAll();

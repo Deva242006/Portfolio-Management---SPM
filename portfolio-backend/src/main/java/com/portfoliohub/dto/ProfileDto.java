@@ -38,6 +38,10 @@ public class ProfileDto {
     @Size(max = 500, message = "Avatar URL cannot exceed 500 characters")
     private String avatarUrl;
 
+    private String templateId;
+    private String themeColor;
+    private String fontFamily;
+
     public ProfileDto() {
     }
 
@@ -135,6 +139,30 @@ public class ProfileDto {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public String getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
+    }
+
+    public String getThemeColor() {
+        return themeColor;
+    }
+
+    public void setThemeColor(String themeColor) {
+        this.themeColor = themeColor;
+    }
+
+    public String getFontFamily() {
+        return fontFamily;
+    }
+
+    public void setFontFamily(String fontFamily) {
+        this.fontFamily = fontFamily;
     }
 }
 

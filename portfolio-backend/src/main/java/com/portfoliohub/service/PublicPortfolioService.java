@@ -20,6 +20,7 @@ public class PublicPortfolioService {
     private final CertificationService certificationService;
     private final ResumeRepository resumeRepository;
     private final ProfileService profileService;
+    private final ExperienceService experienceService;
 
     public PublicPortfolioService(UserRepository userRepository,
                                   ProfileRepository profileRepository,
@@ -27,7 +28,8 @@ public class PublicPortfolioService {
                                   ProjectService projectService,
                                   CertificationService certificationService,
                                   ResumeRepository resumeRepository,
-                                  ProfileService profileService) {
+                                  ProfileService profileService,
+                                  ExperienceService experienceService) {
         this.userRepository = userRepository;
         this.profileRepository = profileRepository;
         this.skillService = skillService;
@@ -35,6 +37,7 @@ public class PublicPortfolioService {
         this.certificationService = certificationService;
         this.resumeRepository = resumeRepository;
         this.profileService = profileService;
+        this.experienceService = experienceService;
     }
 
     @Transactional(readOnly = true)
@@ -78,6 +81,10 @@ public class PublicPortfolioService {
         dto.setSkills(skillService.getSkills(user.getId()));
         dto.setProjects(projectService.getProjects(user.getId()));
         dto.setCertifications(certificationService.getCertifications(user.getId()));
+        dto.setExperiences(experienceService.getExperiences(user.getId()));
+        dto.setTemplateId(profile != null && profile.getTemplateId() != null ? profile.getTemplateId() : "minimal-pro");
+        dto.setThemeColor(profile != null && profile.getThemeColor() != null ? profile.getThemeColor() : "indigo");
+        dto.setFontFamily(profile != null && profile.getFontFamily() != null ? profile.getFontFamily() : "sans");
         dto.setHasResume(hasResume);
         if (hasResume) {
             dto.setResumeDownloadUrl("/api/public/" + user.getUsername() + "/resume");

@@ -33,13 +33,13 @@ public class PublicPortfolioController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/api/public/{username}")
+    @GetMapping({"/api/public/{username}", "/api/public/p/{username}"})
     public ResponseEntity<ApiResponse<PublicPortfolioDto>> getPublicPortfolio(@PathVariable String username) {
         PublicPortfolioDto portfolio = publicPortfolioService.getPublicPortfolio(username);
         return ResponseEntity.ok(ApiResponse.ok("Portfolio retrieved successfully", portfolio));
     }
 
-    @GetMapping("/api/public/{username}/resume")
+    @GetMapping({"/api/public/{username}/resume", "/api/public/p/{username}/resume"})
     public ResponseEntity<Resource> downloadPublicResume(@PathVariable String username) {
         User user = userRepository.findByUsernameIgnoreCase(username.trim())
                 .orElseThrow(() -> new ResourceNotFoundException("Portfolio not found for user: " + username));

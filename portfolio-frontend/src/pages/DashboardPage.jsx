@@ -62,7 +62,7 @@ export const DashboardPage = () => {
   };
 
   const handleCopyUrl = () => {
-    const fullUrl = `${window.location.origin}/u/${stats?.username || user?.username}`;
+    const fullUrl = `${window.location.origin}/p/${stats?.username || user?.username}`;
     navigator.clipboard.writeText(fullUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -73,7 +73,7 @@ export const DashboardPage = () => {
   }
 
   const completionScore = stats?.profileCompletionPercentage || 0;
-  const publicPath = `/u/${stats?.username || user?.username}`;
+  const publicPath = `/p/${stats?.username || user?.username}`;
 
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
@@ -273,8 +273,20 @@ export const DashboardPage = () => {
         </h3>
         <div className="flex flex-wrap items-center gap-3">
           <Link
+            to="/builder"
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-md shadow-indigo-600/20"
+          >
+            <Sparkles className="w-4 h-4" /> Open Builder Studio
+          </Link>
+          <Link
+            to="/templates"
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition"
+          >
+            <span>Change Template (6 Designs)</span>
+          </Link>
+          <Link
             to="/projects"
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition"
           >
             <Plus className="w-4 h-4" /> Add Project
           </Link>
