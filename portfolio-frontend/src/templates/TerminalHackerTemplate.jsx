@@ -263,17 +263,17 @@ export const TerminalHackerTemplate = ({
               <span className="text-slate-500 text-xs">[{skills.length} modules loaded]</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3">
               {skills.map((skill) => (
                 <div
                   key={skill.id}
-                  className="p-3.5 rounded-xl bg-[#0d1424] border border-slate-800/80 hover:border-slate-700 transition space-y-2 group"
+                  className="p-3.5 rounded-xl bg-[#0d1424] border border-slate-800/80 hover:border-slate-700 transition space-y-2 group min-w-0"
                 >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-bold text-white group-hover:text-emerald-400 transition truncate">
+                  <div className="flex items-start justify-between gap-1.5 flex-wrap">
+                    <span className="text-xs sm:text-sm font-bold text-white group-hover:text-emerald-400 transition break-words leading-tight">
                       {skill.name}
                     </span>
-                    <span className={`text-[10px] px-2 py-0.5 rounded font-mono ${theme.bg} ${theme.text} border ${theme.border} flex-shrink-0`}>
+                    <span className={`text-[10px] px-2 py-0.5 rounded font-mono ${theme.bg} ${theme.text} border ${theme.border} shrink-0 whitespace-nowrap`}>
                       {skill.proficiencyLevel || 'Active'}
                     </span>
                   </div>

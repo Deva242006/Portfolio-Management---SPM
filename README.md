@@ -34,6 +34,13 @@ Unlike a static single-template profile editor, **Portfolify functions as a true
 7. **One-Click Publishing & Custom Public URLs**:
    - Toggle public/private visibility at any time.
    - Public URLs available at `/p/:username` (also aliased at `/u/:username`).
+8. **AI-Powered Portfolio Content Generation (Gemini API Integration)**:
+   - **About Me Generator**: Context-aware summary generator tailored to 5 tones (*Professional, Friendly, Confident, Creative, Concise*).
+   - **Professional Headline Generator**: Suggests 3 distinct, high-impact headline alternatives based on actual skills and experience level.
+   - **Project Description Generator**: Technical write-ups supporting 4 modes (*Detailed, Short, Resume-Friendly, Recruiter-Focused*).
+   - **Strict Grounding Guardrails**: Prompt engineered to never hallucinate degrees, credentials, or skills beyond user input.
+   - **Safe Human-in-the-Loop Flow**: Users inspect, edit, copy, and explicitly click "Apply" before changes touch the portfolio state.
+   - **Zero Frontend Key Leakage**: API key is managed purely backend-side via `${GEMINI_API_KEY}`. If unset, graceful in-app setup instructions are provided.
 
 ---
 
@@ -47,9 +54,10 @@ Unlike a static single-template profile editor, **Portfolify functions as a true
 - **Icons**: Lucide React + Custom SVG Icons
 - **State Management**: React Context API (`AuthContext`)
 
-### Backend
+### Backend & AI
 - **Language**: Java 21 (LTS)
 - **Framework**: Spring Boot 3.3.4
+- **AI Engine**: Google Gemini API (`gemini-1.5-flash`)
 - **Security**: Spring Security 6 & Stateless JWT Authentication (JJWT 0.12.5)
 - **Data Persistence**: Spring Data JPA & Hibernate
 - **Database**: MySQL 8.0 (`portfolio_db`)
@@ -254,6 +262,25 @@ mvn test
 ### Public Portfolio (Unauthenticated)
 - `GET /api/public/p/{username}` & `GET /api/public/{username}` — Get public portfolio (only if published)
 - `GET /api/public/p/{username}/resume` & `GET /api/public/{username}/resume` — Download public resume (only if published)
+
+### AI Content Generation (JWT Authenticated)
+- `POST /api/ai/generate-about` — Generate professional About Me bio using specified tone (*Professional, Friendly, Confident, Creative, Concise*).
+- `POST /api/ai/generate-headlines` — Generate 3 distinct headline alternatives based on current role, skills, and experience level.
+- `POST /api/ai/generate-project-description` — Generate tailored project descriptions (*detailed, short, resume-friendly, recruiter-focused*).
+- `POST /api/ai/suggest-improvements` — Review portfolio content and generate actionable critique and enhancement tips.
+
+#### Configuring Gemini AI Key:
+Set the environment variable before starting the backend:
+```bash
+# Windows PowerShell
+$env:GEMINI_API_KEY = "your-gemini-api-key"
+mvn spring-boot:run
+
+# Linux / macOS
+export GEMINI_API_KEY="your-gemini-api-key"
+mvn spring-boot:run
+```
+*Note: If the key is not set, all AI endpoints return a clear setup advisory message and the UI guides the user on how to obtain and configure a key.*
 
 ---
 

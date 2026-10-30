@@ -7,6 +7,7 @@ import TemplateSelector from '../components/builder/TemplateSelector';
 import ThemeCustomizer from '../components/builder/ThemeCustomizer';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import Modal from '../components/common/Modal';
+import AIGeneratorPanel from '../components/ai/AIGeneratorPanel';
 import {
   Sparkles,
   Layers,
@@ -76,6 +77,9 @@ export const BuilderPage = () => {
 
   // Sub-modals for adding items inline
   const [itemModal, setItemModal] = useState({ open: false, type: null, data: null });
+
+  // AI Generator Panel state
+  const [aiPanel, setAiPanel] = useState({ open: false, type: null });
 
   const fetchData = async () => {
     try {
@@ -303,6 +307,43 @@ export const BuilderPage = () => {
     } catch (err) {
       alert('Failed to delete project.');
     }
+  };
+
+  // Build context data for AI panel based on type
+  const buildAiContext = (type, projectOverride = null) => {
+    const skillNames = skillsList.map((s) => s.name).join(', ');
+    const projectNames = projectsList.map((p) => p.title).join(', ');
+    if (type === 'about') {
+      return {
+        fullName: profileForm.fullName,
+        headline: profileForm.headline,
+        education: profileForm.education,
+        skills: skillNames,
+        projects: projectNames,
+        experience: experiencesList.map((e) => e.role + ' at ' + e.company).join(', '),
+      };
+    }
+    if (type === 'headline') {
+      return {
+        fullName: profileForm.fullName,
+        headline: profileForm.headline,
+        skills: skillNames,
+        experienceLevel: experiencesList.length > 0 ? 'Some experience' : 'Entry-level / Student',
+      };
+    }
+    if (type === 'project') {
+      const proj = projectOverride || {};
+      return {
+        title: proj.title || '',
+        technologies: proj.technologies || '',
+        features: '',
+        purpose: '',
+        problemsSolved: '',
+        githubUrl: proj.githubUrl || '',
+        liveDemoUrl: proj.liveDemoUrl || '',
+      };
+    }
+    return {};
   };
 
   if (loading) {
@@ -539,7 +580,16 @@ export const BuilderPage = () => {
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Headline</label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block font-semibold text-slate-700">Headline</label>
+                      <button
+                        type="button"
+                        onClick={() => setAiPanel({ open: true, type: 'headline' })}
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 transition-all"
+                      >
+                        <Sparkles className="w-3 h-3" /> Generate with AI
+                      </button>
+                    </div>
                     <input
                       type="text"
                       name="headline"
@@ -551,7 +601,16 @@ export const BuilderPage = () => {
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-700 mb-1">About Me (Bio)</label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block font-semibold text-slate-700">About Me (Bio)</label>
+                      <button
+                        type="button"
+                        onClick={() => setAiPanel({ open: true, type: 'about' })}
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-semibold text-violet-600 bg-violet-50 hover:bg-violet-100 border border-violet-200 transition-all"
+                      >
+                        <Sparkles className="w-3 h-3" /> Generate with AI
+                      </button>
+                    </div>
                     <textarea
                       rows={4}
                       name="bio"
@@ -1014,7 +1073,16 @@ export const BuilderPage = () => {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Description *</label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-semibold text-slate-700">Description *</label>
+                <button
+                  type="button"
+                  onClick={() => setAiPanel({ open: true, type: 'project', projectData: { ...itemModal.data } })}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold text-violet-600 bg-violet-50 hover:bg-violet-100 border border-violet-200 transition-all"
+                >
+                  <Sparkles className="w-3 h-3" /> Generate with AI
+                </button>
+              </div>
               <textarea
                 rows={3}
                 required
@@ -1092,6 +1160,28 @@ export const BuilderPage = () => {
             </div>
           </form>
         </Modal>
+      )}
+
+      {/* AI Generator Panel */}
+      {aiPanel.open && (
+        <AIGeneratorPanel
+          type={aiPanel.type}
+          contextData={
+            aiPanel.type === 'project'
+              ? buildAiContext('project', aiPanel.projectData)
+              : buildAiContext(aiPanel.type)
+          }
+          onApply={(text) => {
+            if (aiPanel.type === 'about') {
+              setProfileForm((prev) => ({ ...prev, bio: text }));
+            } else if (aiPanel.type === 'headline') {
+              setProfileForm((prev) => ({ ...prev, headline: text }));
+            } else if (aiPanel.type === 'project') {
+              setItemModal((prev) => ({ ...prev, data: { ...prev.data, description: text } }));
+            }
+          }}
+          onClose={() => setAiPanel({ open: false, type: null })}
+        />
       )}
     </div>
   );

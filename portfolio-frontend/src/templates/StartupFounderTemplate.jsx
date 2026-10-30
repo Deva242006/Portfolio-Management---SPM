@@ -214,16 +214,16 @@ export const StartupFounderTemplate = ({
         {skills.length > 0 && (
           <section className="space-y-4">
             <h2 className="text-2xl font-bold text-white tracking-tight">Technology Infrastructure</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3">
               {skills.map((skill) => (
                 <div
                   key={skill.id}
-                  className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800 flex flex-col justify-between space-y-1.5"
+                  className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800 flex flex-col justify-between space-y-1.5 min-w-0"
                 >
-                  <span className="text-xs font-bold text-white truncate">{skill.name}</span>
-                  <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-sm font-bold text-white break-words leading-tight">{skill.name}</span>
+                  <div className="flex items-center justify-between text-[11px] gap-1 flex-wrap">
                     <span className="text-slate-500 truncate">{skill.category}</span>
-                    <span className="text-indigo-400 font-semibold">{skill.proficiencyLevel}</span>
+                    <span className="text-indigo-400 font-semibold shrink-0">{skill.proficiencyLevel}</span>
                   </div>
                 </div>
               ))}

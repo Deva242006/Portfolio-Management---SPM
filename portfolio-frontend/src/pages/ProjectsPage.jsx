@@ -4,6 +4,7 @@ import Modal from '../components/common/Modal';
 import ConfirmDialog from '../components/common/ConfirmDialog';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import EmptyState from '../components/common/EmptyState';
+import AIGeneratorPanel from '../components/ai/AIGeneratorPanel';
 import {
   FolderGit2,
   Plus,
@@ -14,6 +15,7 @@ import {
   Image,
   AlertCircle,
   CheckCircle2,
+  Sparkles,
 } from 'lucide-react';
 import { Github } from '../components/common/Icons';
 
@@ -22,6 +24,7 @@ export const ProjectsPage = () => {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [isAiOpen, setIsAiOpen] = useState(false);
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -329,9 +332,18 @@ export const ProjectsPage = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Description
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-xs font-semibold text-slate-700">
+                Description
+              </label>
+              <button
+                type="button"
+                onClick={() => setIsAiOpen(true)}
+                className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold text-violet-600 bg-violet-50 hover:bg-violet-100 border border-violet-200 transition-all cursor-pointer"
+              >
+                <Sparkles className="w-3 h-3" /> Generate with AI
+              </button>
+            </div>
             <textarea
               rows={3}
               value={formData.description}
@@ -441,6 +453,21 @@ export const ProjectsPage = () => {
           setProjectToDelete(null);
         }}
       />
+
+      {/* AI Generator Panel */}
+      {isAiOpen && (
+        <AIGeneratorPanel
+          type="project"
+          contextData={{
+            title: formData.title,
+            technologies: formData.technologies,
+            githubUrl: formData.githubUrl,
+            liveDemoUrl: formData.liveDemoUrl,
+          }}
+          onApply={(text) => setFormData((prev) => ({ ...prev, description: text }))}
+          onClose={() => setIsAiOpen(false)}
+        />
+      )}
     </div>
   );
 };

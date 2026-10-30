@@ -18,6 +18,7 @@ import {
   Check,
   AlertCircle,
   TrendingUp,
+  Sparkles,
 } from 'lucide-react';
 
 export const DashboardPage = () => {

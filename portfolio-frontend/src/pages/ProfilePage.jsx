@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import AIGeneratorPanel from '../components/ai/AIGeneratorPanel';
 import {
   User,
   Mail,
@@ -14,6 +15,7 @@ import {
   CheckCircle2,
   AlertCircle,
   Save,
+  Sparkles,
 } from 'lucide-react';
 import { Github, Linkedin } from '../components/common/Icons';
 
@@ -23,7 +25,7 @@ export const ProfilePage = () => {
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-
+  const [aiPanel, setAiPanel] = useState({ open: false, type: null });
   const [formData, setFormData] = useState({
     fullName: '',
     headline: '',
@@ -191,9 +193,18 @@ export const ProfilePage = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">
-                Professional Headline *
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-semibold text-slate-600">
+                  Professional Headline *
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setAiPanel({ open: true, type: 'headline' })}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 transition-all"
+                >
+                  <Sparkles className="w-3 h-3" /> Generate with AI
+                </button>
+              </div>
               <input
                 type="text"
                 name="headline"
@@ -206,9 +217,18 @@ export const ProfilePage = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">
-              About Me (Biography)
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-xs font-semibold text-slate-600">
+                About Me (Biography)
+              </label>
+              <button
+                type="button"
+                onClick={() => setAiPanel({ open: true, type: 'about' })}
+                className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold text-violet-600 bg-violet-50 hover:bg-violet-100 border border-violet-200 transition-all"
+              >
+                <Sparkles className="w-3 h-3" /> Generate with AI
+              </button>
+            </div>
             <textarea
               name="bio"
               rows={4}
@@ -385,6 +405,26 @@ export const ProfilePage = () => {
           </button>
         </div>
       </form>
+
+      {/* AI Generator Panel */}
+      {aiPanel.open && (
+        <AIGeneratorPanel
+          type={aiPanel.type}
+          contextData={{
+            fullName: formData.fullName,
+            headline: formData.headline,
+            education: formData.education,
+          }}
+          onApply={(text) => {
+            if (aiPanel.type === 'about') {
+              setFormData((prev) => ({ ...prev, bio: text }));
+            } else if (aiPanel.type === 'headline') {
+              setFormData((prev) => ({ ...prev, headline: text }));
+            }
+          }}
+          onClose={() => setAiPanel({ open: false, type: null })}
+        />
+      )}
     </div>
   );
 };
